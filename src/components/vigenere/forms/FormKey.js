@@ -4,33 +4,40 @@ import { verify, getKey } from './../../../helpers/vigenere';
 
 const FormKey = ( { setKey } ) => {
 
-	const [ [key, attr, auto], setKeyState  ] = useState(['','', false]);  
+	const [ key, setState ] = useState( '' );
+	const [ vigAuto, setVigAuto ] = useState( false );  
+	const [ attr, setAttr ] = useState('');
 
-	const handleChange = async(e) =>{
+	const handleChange = (e) =>{
 		e.preventDefault();
-		if( e.target.name === 'auto'){
-			if( auto ){
-				setKeyState([key, attr, false]);
-			}else{
-				let key = await getKey();
-				console.log(key);
-				setKey( key );
-				setKeyState([key, 'is-valid', true]);
-			}
-		}else if (e.target.name === 'key'){
-			setKey(e.target.value);
-			setKeyState([e.target.value, '', auto]);
+		let name = e.target.name;
+		let value = e.target.value;
+		
+		if ( name === 'key' ){
+			setKey( value );
+			setState( value );
 		}
 	}
 
-	const handleClick = async(e) => {
+	const handleVerify= async (e) => {
 		e.preventDefault();
-		if( key.length > 0){
-			let verified =  await verify( key );
-			console.log( verified );
-			setKeyState([key, verified, auto]);
+		let  ok = await verify( key );
+		if( ok ){
+			setAttr('is-valid');
 		}else{
-			setKeyState( [key, 'is-invalid', auto] );
+			setAttr('is-invalid');
+		}
+	}
+	
+	const handleGetKey = async ( e ) =>{
+		e.preventDefault();
+		if( !vigAuto ){
+			let key = await getKey();
+			setKey( key );
+			setState( key );
+			setVigAuto( true );
+		}else{
+			setVigAuto( false );
 		}
 	}
 
@@ -43,11 +50,11 @@ const FormKey = ( { setKey } ) => {
 				<div className="col">
 					<input 
 						type="text"
-						className={`form-control ${attr}`}
+						id="key"
 						name="key" 
 						value={key} 
 						onChange={handleChange}
-						readOnly={auto}
+						className={`form-control ${attr}`}
 					/>
 				</div>
 			</div>
@@ -55,16 +62,16 @@ const FormKey = ( { setKey } ) => {
 			<div className="form-row mb-3">
 				<div className="col-1">
 					<input
-						name="auto"
 						type="checkbox"
-						onChange={handleChange}
-						id="auto"
-						checked={auto}
+						id="vigAuto"
+						name="vigAuto"
+						onChange={ handleGetKey }
+						checked={vigAuto}
 					/>
 				</div>
 				<div className="col">
 						<label 
-							htmlFor="auto" 
+							htmlFor="vigAuto" 
 							className="ml-1 pb-1"
 						>Generar automaticamente</label>
 				</div>
@@ -73,8 +80,8 @@ const FormKey = ( { setKey } ) => {
 			<div className="form-row mb-3">
 					<div className="col">
 						<button 
+							onClick={handleVerify}
 							className="btn btn-primary btn-block" 
-							onClick={handleClick}
 						>Verificar</button>
 					</div>
 			</div>

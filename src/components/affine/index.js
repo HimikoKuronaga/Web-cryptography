@@ -2,19 +2,20 @@ import React, {useState} from 'react';
 import FormKey from './forms/FormKey';
 import FormServices from './forms/FormServices';
 
-import { fetchFile  } from './../../helpers/affine';
+import { fetchFile, verify  } from './../../helpers/affine';
 
 const Affine = () =>{
 
-	const [ [a, b, ring], setKey ] = useState([0, 0, 0]);
+	const [ [a, b, ring], setKey ] = useState(['', '', '']);
 	const [ file, setFile ] = useState({});
 	
-	const handleFetchService = ( modo ) =>{
-		if( a === 0 ){
-			window.alert('Primero debes ingresar la llave correctamente');
-			return;
+	const handleFetchService = async ( modo ) =>{
+		if( await verify( a, b, ring ) !== 3){
+			window.alert('La llave es incorrecta, intenta con otro valor');
+			return ;
 		}
-		if( file !== {} ){
+		
+		if( typeof file.name === 'string' ){
 			fetchFile( a, b, ring, file, modo );
 		}else{
 			window.alert(`Primero debes seleccionar un archivo para ${modo}`);

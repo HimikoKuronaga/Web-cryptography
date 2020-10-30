@@ -2,20 +2,20 @@ import React, {useState} from 'react';
 import FormKey from './forms/FormKey';
 import FormServices from './forms/FormServices';
 
-import { fetchFile } from './../../helpers/vigenere';
+import { fetchFile, verify } from './../../helpers/vigenere';
 
 const Vigenere = () => {
 
 	const [key, setKey] = useState('');
 	const [file, setFile] = useState({});
 
-	const handleFetchService = ( op ) =>{
-		if( key.length === 0){
-			window.alert('Debes proporcionar una llave');
+	const handleFetchService = async ( op ) =>{
+		if( ! await verify(key) ){
+			window.alert('La llave que es no es valida, prueba con otros valores');
 			return;
 		}
 
-		if( file !== {} ){
+		if( typeof file.name === 'string' ){
 			fetchFile( key, file, op );
 		}else{
 			window.alert('Primero debes seleccionar un archivo');
