@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 
 export const getKey = async () =>{
-	const url = `http://localhost:4000/vigenere/key`;
+	const url = `https://server-cryptography.herokuapp.com/vigenere/key`;
 
 	let response = await fetch(url);
 	let res = await response.json();
@@ -10,7 +10,7 @@ export const getKey = async () =>{
 }
 
 export const verify = async ( key ) =>{
-	const url = `http://localhost:4000/vigenere/verify?key=${key}`;
+	const url = `https://server-cryptography.herokuapp.com/vigenere/verify?key=${key}`;
 	let response = await fetch(url);
 	let { ok } = await response.json();
 
@@ -21,7 +21,7 @@ export const verify = async ( key ) =>{
 }
 
 export const fetchFile = async ( key, file, op = 'encrypt' ) => {
-	const url = `http://localhost:4000/vigenere/file/${op}`;
+	const url = `https://server-cryptography.herokuapp.com/vigenere/file/${op}`;
 
 	const body = new FormData();
 	body.append('key', key);

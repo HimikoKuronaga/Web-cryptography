@@ -1,7 +1,9 @@
 import FileSaver from 'file-saver';
 
+const url = '';
+
 export const getKey = async ( ring = 128 ) => {
-	const url = `http://localhost:4000/affine/key?ring=${ring}`;
+	const url = `https://server-cryptography.herokuapp.com/affine/key?ring=${ring}`;
 	let response = await fetch(url);
 	let resp = await response.json();
 	
@@ -10,7 +12,7 @@ export const getKey = async ( ring = 128 ) => {
 
 export const verifyKey = async ( a, b, ring = 128 ) =>{
 
-	const url = `http://localhost:4000/affine/verify?a=${a}&b=${b}&ring=${ring}`;
+	const url = `https://server-cryptography.herokuapp.com/affine/verify?a=${a}&b=${b}&ring=${ring}`;
 
 	let response = await fetch(url);
 	let {resp} = await response.json();
@@ -27,7 +29,7 @@ export const verifyKey = async ( a, b, ring = 128 ) =>{
 }
 
 export const fetchFile = async ( a, b, ring, file, modo = 'encrypt' ) => {
-	const url = `http://localhost:4000/affine/file/${modo}`;
+	const url = `https://server-cryptography.herokuapp.com/affine/file/${modo}`;
 	const body = new FormData();
 	
 	body.append( 'a', a );
