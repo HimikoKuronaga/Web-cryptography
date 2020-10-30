@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 
-/*const url = 'https://server-cryptography.herokuapp.com/';*/
-const url = 'http://localhost:4000';
+const url = 'https://server-cryptography.herokuapp.com';
+//const url = 'http://localhost:4000';
 
 export const getKey = async ( ring = 128 ) => {
 	const fetchUrl = `${url}/affine/key?ring=${ring}`;
