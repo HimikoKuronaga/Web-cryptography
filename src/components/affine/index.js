@@ -9,12 +9,11 @@ const Affine = () =>{
 	const [ [a, b, ring], setKey ] = useState([0, 0, 0]);
 	const [ file, setFile ] = useState({});
 	
-	const handleFetchService = ( type, modo ) =>{
-		if( a === 0){
+	const handleFetchService = ( modo ) =>{
+		if( a === 0 ){
 			window.alert('Primero debes ingresar la llave correctamente');
 			return;
 		}
-		
 		if( file !== {} ){
 			fetchFile( a, b, ring, file, modo );
 		}else{
